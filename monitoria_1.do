@@ -1,6 +1,6 @@
 *-----------------------------------------------------------------*
 * Curso: Evaluación de Impacto con Aplicaciones en Educación      *
-* Monitoria 1                                                     *
+* Taller 1                                                        *
 * Profesor: Felipe Barrera                                        *
 * Profesor Asistente: Carlos Bermúdez                             *   
 * Fecha: junio 2024                                               *                  
@@ -47,20 +47,18 @@ label variable round "Etapa seguimiento"
 
 * Pregunta 1 - Descripción variables
 describe
-summarize score ophe-min_dist if round==0
+
 eststo clear
-
 estpost tabstat score ophe-min_dist if round==0, c(stat) stat(mean sd min max n)
-
 esttab using "$root/tab1_1.tex", replace cells("mean(fmt(2)) sd min(fmt(0)) max(fmt(0)) count(fmt(0))") nonumber nomtitle booktabs noobs collabels("Mean" "SD" "Min" "Max" "N")  addnote(" ") coeflabels(score "índice pobreza" ophe "Gasto educación (valor per-capita)" age_hh "Edad jefe hogar (años)" age_sp "Edad conyuge (años)"educ_hh "Educación jefe hogar (años)" educ_sp "Educación conyuge (años)" ethnicity_hh "Jefe hogar habla lengua indigena" female_hh "Jefe hogar mujer" hhsize_basal "Tamaño hogar" dirtfloor_basal "Piso de tierra" bathroom_basal "Baño privado" landhectars_basal "Hectáreas población" min_dist "Dist. pob. y hospital más cercano") 
-*Esto es una prueba para ver si sí se iplementan los cambios
+
+*Esto es una prueba para ver si se iplementan los cambios
 * Pregunta 2 - Diferencia Antes-Después.
-*hola mundo
 *help ttest 
-gen double round2 = round==0
+
 mat diff=J(2,4,.)
 mat stars=J(1,4,.)
-ttest ophe if treatcom==1 & eligible ==1, by(round2)
+ttest ophe if treatcom==1 & eligible ==1, by(round) reverse
 mat diff[1,1]=`r(mu_1)'
 mat diff[1,2]=`r(mu_2)'
 mat diff[2,1]=(`r(sd_1)')
@@ -73,8 +71,8 @@ mat stars[1,2]=0
 mat stars[1,3]=0
 mat stars[1,4]=(r(p)<0.1)+(r(p)<0.05)+(r(p)<0.01)
 
-frmttable using "tab1_2.tex",replace statmat(diff) annotate(stars) sdec(3) asymbol(*,**,***) tex fragment ctitles("" "Mean Round=1" "Mean Round=0" "Diff" "p-value") rtitles("Gasto educación" \ "sd") 
- esttab using "$root/tab1_2.tex", se label nocons replace
+frmttable using "$root/tab1_2.tex",replace statmat(diff) annotate(stars) sdec(3) asymbol(*,**,***) tex fragment ctitles("" "Mean Round=1" "Mean Round=0" "Diff" "p-value") rtitles("Gasto educación" \ "sd") 
+
  
 *Los gastos en educación son en promedio menores menores
 
