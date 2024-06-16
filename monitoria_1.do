@@ -1,6 +1,6 @@
 *-----------------------------------------------------------------*
 * Curso: Evaluación de Impacto con Aplicaciones en Educación      *
-* Taller 1                                                        *
+* Monitoria 1                                                     *
 * Profesor: Felipe Barrera                                        *
 * Profesor Asistente: Carlos Bermúdez                             *   
 * Fecha: junio 2024                                               *                  
@@ -56,23 +56,24 @@ esttab using "$root/tab1_1.tex", replace cells("mean(fmt(2)) sd min(fmt(0)) max(
 * Pregunta 2 - Diferencia Antes-Después.
 *help ttest 
 
-mat diff=J(2,4,.)
-mat stars=J(1,4,.)
+mat diff=J(2,5,.)
+mat stars=J(1,5,.)
 ttest ophe if treatcom==1 & eligible ==1, by(round) reverse
 mat diff[1,1]=`r(mu_1)'
 mat diff[1,2]=`r(mu_2)'
 mat diff[2,1]=(`r(sd_1)')
 mat diff[2,2]=(`r(sd_2)')
-mat diff[2,3]=(`r(sd)')
+mat diff[1,4]=(`r(se)')
 mat diff[1,3]=`r(mu_1)'-`r(mu_2)'
-mat diff[1,4]=`r(p)'
+mat diff[1,5]=`r(p)'
 mat stars[1,1]=0
 mat stars[1,2]=0
 mat stars[1,3]=0
-mat stars[1,4]=(r(p)<0.1)+(r(p)<0.05)+(r(p)<0.01)
+mat stars[1,4]=0
+mat stars[1,5]=(r(p)<0.1)+(r(p)<0.05)+(r(p)<0.01)
 
-frmttable using "$root/tab1_2.tex",replace statmat(diff) annotate(stars) sdec(3) asymbol(*,**,***) tex fragment ctitles("" "Mean Round=1" "Mean Round=0" "Diff" "p-value") rtitles("Gasto educación" \ "sd") 
-
+frmttable using "$root/tab1_2.tex",replace statmat(diff) annotate(stars) sdec(3) asymbol(*,**,***) tex fragment ctitles("" "Mean Round=1" "Mean Round=0" "Diff" "se" "p-value") rtitles("Gasto educación" \ "sd") 
+ *esttab using "$root/tab1_2.tex", se label nocons replace
  
 *Los gastos en educación son en promedio menores menores
 
@@ -83,6 +84,7 @@ eststo clear
 eststo m1: regress ophe  round if treatcom==1 & eligible ==1, vce(cluster local)
 esttab m1 using "$root/tab1_3.tex",star(* 0.10 ** 0.05 *** 0.01)  se nocons nonumber nonotes label coeflabels(round "Etapa seguimiento = 1") stats(N, labels("Observaciones")) replace addnote("Errores estándar cluster en paréntsis")
 * 
+
 
 
 * Pregunta 4
