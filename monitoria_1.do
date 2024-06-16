@@ -72,7 +72,7 @@ mat stars[1,3]=0
 mat stars[1,4]=0
 mat stars[1,5]=(r(p)<0.1)+(r(p)<0.05)+(r(p)<0.01)
 
-frmttable using "$root/tab1_2.tex",replace statmat(diff) annotate(stars) sdec(3) asymbol(*,**,***) tex fragment ctitles("" "Mean Round=1" "Mean Round=0" "Diff" "se" "p-value") rtitles("Gasto educación" \ "sd") 
+frmttable using "$root/tab1_2.tex",replace statmat(diff) annotate(stars) sdec(3) asymbol(*,**,***) tex fragment ctitles("" "Mean Round=1" "Mean Round=0" "Diff" "se" "p-value") rtitles("Gasto educación" \ "sd") note("* p \textless 0.10, ** p \textless 0.05, *** p \textless 0.01.")
  *esttab using "$root/tab1_2.tex", se label nocons replace
  
 *Los gastos en educación son en promedio menores menores
@@ -82,9 +82,7 @@ frmttable using "$root/tab1_2.tex",replace statmat(diff) annotate(stars) sdec(3)
 label variable ophe "OPHE"
 eststo clear
 eststo m1: regress ophe  round if treatcom==1 & eligible ==1, vce(cluster local)
-esttab m1 using "$root/tab1_3.tex",star(* 0.10 ** 0.05 *** 0.01)  se nocons nonumber nonotes label coeflabels(round "Etapa seguimiento = 1") stats(N, labels("Observaciones")) replace addnote("Errores estándar cluster en paréntsis")
-* 
-
+esttab m1 using "$root/tab1_3.tex",star(* 0.10 ** 0.05 *** 0.01)  se nocons nonumber nonotes label coeflabels(round "Etapa seguimiento = 1") stats(N, labels("Observaciones")) replace addnote("Errores estándar cluster en paréntsis" "* p \textless 0.10, ** p \textless 0.05, *** p \textless 0.01.")
 
 
 * Pregunta 4
