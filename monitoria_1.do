@@ -136,16 +136,11 @@ frmttable using "$root/tab2_2.tex",replace statmat(diff) annotate(stars) sdec(3)
 
 eststo clear
 eststo m2: reg ophe treatcom if eligible ==1&round==1, vce(cluster local)
-esttab m2 using "$root/tab2_3.tex",se label nocons replace 
+esttab m2 using "$root/tab2_3.tex",star(* 0.10 ** 0.05 *** 0.01)  se nocons nonumber nonotes label coeflabels(treatcom "Tratados = 1") stats(N, labels("Observaciones")) replace addnote("Errores estándar cluster en paréntsis" "* p \textless 0.10, ** p \textless 0.05, *** p \textless 0.01.")
 
-
-
-*regress ophe i.treatcom##i.round min_dist hhsize_basal female_hh educ_sp educ_hh bathroom_basal dirtfloor_basal age_sp age_hh if eligible ==1, vce(cluster local)
 
 * Pregunta 4
 * El valor esperado del gasto en educación en round = 1 cuando la persona es trtada es menor que en el grupo control; esto teniendo en cuenta solo quienes habrían sido elegibles. 
-
-*------- Debería randomizar y hacer lo de la sharp-null?
 
 * Pregunta 5
 
