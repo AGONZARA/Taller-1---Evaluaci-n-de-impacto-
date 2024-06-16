@@ -78,9 +78,10 @@ frmttable using "$root/tab1_2.tex",replace statmat(diff) annotate(stars) sdec(3)
 
 * Pregunta 3 - OLS
 *help regress
+label variable ophe "OPHE"
 eststo clear
 eststo m1: regress ophe  round if treatcom==1 & eligible ==1, vce(cluster local)
-esttab m1 using "$root/tab1_3.tex",se label nocons replace 
+esttab m1 using "$root/tab1_3.tex",star(* 0.10 ** 0.05 *** 0.01)  se nocons nonumber nonotes label coeflabels(round "Etapa seguimiento = 1") stats(N, labels("Observaciones")) replace addnote("Errores estándar cluster en paréntsis")
 * 
 
 
