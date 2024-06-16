@@ -110,12 +110,24 @@ orth_out ophe-min_dist if round==0 & eligible==1, by(treatcom) se count test
 *Una vez tenemos en cuenta también la elegibilidad encontramos que en promedio las variables explicativas se parecen más entre tratados y no tratados. Asumiendo aleatoriedad en la asignación del tratamiento se debería esperar que efectivamente que en el escenario base no exista diferencia entre tratados y no tratados.
 
 * Pregunta 2
-ttest ophe if round==1 & eligible==1 , by(treatcom) reverse 
 
-gen double treatcom2 = treatcom==0
-eststo clear
-estpost ttest ophe if round==1 & eligible==1 , by(treatcom2)
- esttab using "$root/tab2_2.tex", se label nocons replace
+mat diff=J(2,5,.)
+mat stars=J(1,5,.)
+ttest ophe if round==1 & eligible==1 , by(treatcom) reverse 
+mat diff[1,1]=`r(mu_1)'
+mat diff[1,2]=`r(mu_2)'
+mat diff[2,1]=(`r(sd_1)')
+mat diff[2,2]=(`r(sd_2)')
+mat diff[1,4]=(`r(se)')
+mat diff[1,3]=`r(mu_1)'-`r(mu_2)'
+mat diff[1,5]=`r(p)'
+mat stars[1,1]=0
+mat stars[1,2]=0
+mat stars[1,3]=0
+mat stars[1,4]=0
+mat stars[1,5]=(r(p)<0.1)+(r(p)<0.05)+(r(p)<0.01)
+
+frmttable using "$root/tab2_2.tex",replace statmat(diff) annotate(stars) sdec(3) asymbol(*,**,***) tex fragment ctitles("" "Mean Round=1" "Mean Round=0" "Diff" "se" "p-value") rtitles("Gasto educación" \ "sd") note("* p \textless 0.10, ** p \textless 0.05, *** p \textless 0.01.")
 
 *Según este estimador se redujo el gasto en educación de los hogares tratados.
 
